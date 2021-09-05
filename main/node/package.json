@@ -3,24 +3,29 @@
     "version": "0.0.1",
     "description": "Easy File System management",
     "main": "index.js",
-    "scripts": {
-    },
+    "scripts": {},
     "repository": {
         "type": "git",
         "url": "git+https://github.com/jeff-hykin/fysh.git"
     },
-    "keywords": [
-        "javascript",
-        "toolkit",
-        "library"
-    ],
     "author": "Jeff Hykin",
     "license": "ISC",
     "bugs": {
         "url": "https://github.com/jeff-hykin/fysh/issues"
     },
     "homepage": "https://github.com/jeff-hykin/fysh#readme",
+    "keywords": [
+        "fs",
+        "fysh",
+        "filesystem"
+    ],
+    "devDependencies": {
+        "shx": "^0.3.2"
+    },
     "dependencies": {
-        "node-fetch": "^2.6.1"
+        "async": "^1.5.2",
+        "mkdirp": "^0.5.1",
+        "rimraf": "^2.5.2",
+        "underscore-plus": "1.x"
     }
 }
