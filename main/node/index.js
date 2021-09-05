@@ -227,7 +227,8 @@ const fsPlus = {
     // Public: Returns the size of the specified path.
     getSizeSync(pathToCheck) {
         if (isPathValid(pathToCheck)) {
-            return statSyncNoException(pathToCheck).size ?? -1
+            let size = statSyncNoException(pathToCheck).size
+            return size == null ? -1 : size
         } else {
             return -1
         }
