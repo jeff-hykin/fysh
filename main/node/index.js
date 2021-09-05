@@ -800,7 +800,41 @@ const fsPlus = {
         }
         return allFiles
     },
+
+    sync: {
+        list(directoryPath) {
+            if (fs.isDirectorySync(directoryPath)) {
+                try {
+                    return fs.readdirSync(directoryPath)
+                } catch (e) {
+                    return []
+                }
+            } else {
+                return []
+            }
+        },
+
+        listRecursive(...args) {
+            return fs.allFilesRecursivelySync(...args)
+        },
+
+        cp(sourcePath, destinationPath) {
+            fsPlus.removeSync(destinationPath)
+            // ensure parent folder exists
+            fs.mkdirSync(path.dirname(destinationPath), {recursive: true})
+            return fsPlus.copySync(sourcePath, destinationPath)
+        },
+
+        mv(sourcePath, destinationPath) {
+            fsPlus.removeSync(destinationPath)
+            // ensure parent folder exists
+            fs.mkdirSync(path.dirname(destinationPath), {recursive: true})
+            return fsPlus.moveSync(sourcePath, destinationPath)
+        },
+    }
 }
+
+
 
 // Built-in [l]statSyncNoException methods are only provided in Electron releases
 // before 3.0.  We delay the version check until first request so that Electron
