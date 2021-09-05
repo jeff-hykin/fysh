@@ -797,7 +797,7 @@ const fsPlus = {
             allFiles.push(fullPath)
             // explore all sub directories
             if (fileStats.isDirectory()) {
-                allFiles = allFiles.concat(await fsPlus.allFilesRecursivelySync(fullPath))
+                allFiles = allFiles.concat(fsPlus.allFilesRecursivelySync(fullPath))
             }
         }
         return allFiles
@@ -805,7 +805,7 @@ const fsPlus = {
 
     sync: {
         list(directoryPath) {
-            if (fs.isDirectorySync(directoryPath)) {
+            if (fsPlus.isDirectorySync(directoryPath)) {
                 try {
                     return fs.readdirSync(directoryPath)
                 } catch (e) {
@@ -817,7 +817,7 @@ const fsPlus = {
         },
 
         listRecursive(...args) {
-            return fs.allFilesRecursivelySync(...args)
+            return fsPlus.allFilesRecursivelySync(...args)
         },
 
         cp(sourcePath, destinationPath) {
