@@ -1,6 +1,6 @@
 {
     "name": "fysh",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "description": "Easy File System management",
     "main": "index.js",
     "scripts": {},

@@ -205,9 +205,9 @@ const fsPlus = {
     // Public: Calls back with true if the specified path is a symbolic link.
     isSymbolicLink(symlinkPath, callback) {
         if (isPathValid(symlinkPath)) {
-            return fs.lstat(symlinkPath, (error, stat) => callback?.(stat != null && stat.isSymbolicLink()))
+            return fs.lstat(symlinkPath, (error, stat) => callback && callback(stat != null && stat.isSymbolicLink()))
         } else {
-            return process.nextTick(() => callback?.(false))
+            return process.nextTick(() => callback & callback(false))
         }
     },
 
@@ -382,7 +382,7 @@ const fsPlus = {
         callback = _.last(arguments)
         mkdirp(path.dirname(filePath), (error) => {
             if (error != null) {
-                callback?.(error)
+                callback&&callback(error)
             } else {
                 fs.writeFile(filePath, content, options, callback)
             }
@@ -393,23 +393,23 @@ const fsPlus = {
     copy(sourcePath, destinationPath, done) {
         mkdirp(path.dirname(destinationPath), (error) => {
             if (error != null) {
-                done?.(error)
+                done&&done(error)
                 return
             }
 
             const sourceStream = fs.createReadStream(sourcePath)
             sourceStream.on("error", (error) => {
-                done?.(error)
+                done&&done(error)
                 return (done = null)
             })
 
             const destinationStream = fs.createWriteStream(destinationPath)
             destinationStream.on("error", (error) => {
-                done?.(error)
+                done&&done(error)
                 return (done = null)
             })
             destinationStream.on("close", () => {
-                done?.()
+                done&&done()
                 return (done = null)
             })
 
@@ -485,9 +485,9 @@ const fsPlus = {
     makeTree(directoryPath, callback) {
         fsPlus.isDirectory(directoryPath, (exists) => {
             if (exists) {
-                return callback?.()
+                return callback&&callback()
             }
-            mkdirp(directoryPath, (error) => callback?.(error))
+            mkdirp(directoryPath, (error) => callback&&callback(error))
         })
     },
 
@@ -545,7 +545,7 @@ const fsPlus = {
     traverseTree(rootPath, onFile, onDirectory, onDone) {
         return fs.readdir(rootPath, (error, files) => {
             if (error) {
-                return onDone?.()
+                return onDone&&done()
             } else {
                 let queue = asyncLib.queue((childPath, callback) =>
                     fs.stat(childPath, (error, stats) => {
@@ -608,7 +608,8 @@ const fsPlus = {
         if (_.isArray(_.last(args))) {
             extensions = args.pop()
         }
-        const pathToResolve = args.pop()?.toString()
+        const popped = args.pop()
+        const pathToResolve = popped && popped.toString()
         const loadPaths = args
 
         if (!pathToResolve) {
@@ -701,7 +702,7 @@ const fsPlus = {
 
     // Public: Returns true for extensions associated with pdf files.
     isPdfExtension(ext) {
-        return ext?.toLowerCase() === ".pdf"
+        return ext && ext.toLowerCase() === ".pdf"
     },
 
     // Public: Returns true for extensions associated with binary files.
